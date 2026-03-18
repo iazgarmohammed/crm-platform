@@ -1,5 +1,5 @@
+import { useState, useEffect } from 'react';
 import { exportToCSV } from '../utils/exportCSV';
-import { useState } from 'react';
 import dayjs from 'dayjs';
 import useEducationStore, {
   EDUCATION_STAGES, INSTITUTION_TYPES, CONTACT_ROLES,
@@ -34,7 +34,8 @@ const DEFAULTS = {
 };
 
 export default function EducationCRM() {
-  const { institutions, addInstitution, updateInstitution, deleteInstitution, updateInstitutionStage } = useEducationStore();
+  const { institutions, addInstitution, updateInstitution, deleteInstitution, updateInstitutionStage, fetchInstitutions, loading } = useEducationStore();
+    useEffect(() => { fetchInstitutions(); }, []);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(DEFAULTS);

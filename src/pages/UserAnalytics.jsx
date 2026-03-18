@@ -1,5 +1,5 @@
 import { exportToCSV } from '../utils/exportCSV';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid,
@@ -33,7 +33,9 @@ const DEFAULTS = {
 };
 
 export default function UserAnalytics() {
-  const { snapshots, addSnapshot, updateSnapshot, deleteSnapshot } = useUserStore();
+  const { snapshots, addSnapshot, updateSnapshot, deleteSnapshot, fetchSnapshots, loading } = useUserStore();
+
+useEffect(() => { fetchSnapshots(); }, []);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(DEFAULTS);

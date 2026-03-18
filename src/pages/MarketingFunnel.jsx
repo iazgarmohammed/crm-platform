@@ -1,5 +1,5 @@
 import { exportToCSV } from '../utils/exportCSV';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import useMarketingStore, {
   FUNNEL_STAGES, LEAD_TYPES, SOURCE_CHANNELS, MARKETING_STATUS,
@@ -36,8 +36,9 @@ const CAMPAIGN_DEFAULTS = {
 };
 
 export default function MarketingFunnel() {
-  const { leads, campaigns, addLead, updateLead, deleteLead, updateLeadStage, addCampaign, updateCampaign, deleteCampaign } = useMarketingStore();
+  const { leads, campaigns, addLead, updateLead, deleteLead, updateLeadStage, addCampaign, updateCampaign, deleteCampaign, fetchLeads, fetchCampaigns, loading } = useMarketingStore();
 
+useEffect(() => { fetchLeads(); fetchCampaigns(); }, []);
   const [activeTab, setActiveTab] = useState('leads');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState('lead');

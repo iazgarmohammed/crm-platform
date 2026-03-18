@@ -54,8 +54,12 @@ const useUserStore = create((set) => ({
   },
 
   addSnapshot: async (data) => {
-    const { data: inserted, error } = await supabase
-      .from('user_snapshots').insert([fromSnapshot(data)]).select().single();
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: inserted, error } = await supabase
+    .from('user_snapshots').insert([{ ...fromSnapshot(data), created_by: user.id }]).select().single();
+  if (error) { alert('Error: ' + error.message); return; }
+  set((s) => ({ snapshots: [toSnapshot(inserted), ...s.snapshots] }));
+},
     if (error) { alert('Error: ' + error.message); return; }
     set((s) => ({ snapshots: [toSnapshot(inserted), ...s.snapshots] }));
   },

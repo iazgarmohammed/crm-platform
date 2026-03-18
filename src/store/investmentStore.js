@@ -128,8 +128,9 @@ const useInvestmentStore = create((set, get) => ({
 
   // ── STARTUP ACTIONS ──
   addStartup: async (data) => {
-    const { data: inserted, error } = await supabase
-      .from('startups').insert([fromStartup(data)]).select().single();
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: inserted, error } = await supabase
+    .from('startups').insert([{ ...fromStartup(data), created_by: user.id }]).select().single();
     if (error) { alert('Error adding startup: ' + error.message); return; }
     set((s) => ({ startups: [toStartup(inserted), ...s.startups] }));
   },
@@ -156,14 +157,15 @@ const useInvestmentStore = create((set, get) => ({
 
   // ── INVESTOR ACTIONS ──
   addInvestor: async (data) => {
-    const { data: inserted, error } = await supabase
-      .from('investors').insert([fromInvestor(data)]).select().single();
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: inserted, error } = await supabase
+    .from('investors').insert([{ ...fromInvestor(data), created_by: user.id }]).select().single();
     if (error) { alert('Error adding investor: ' + error.message); return; }
     set((s) => ({ investors: [toInvestor(inserted), ...s.investors] }));
   },
 
   updateInvestor: async (id, data) => {
-    const { error } = await supabase
+    const { error } = await supabasee
       .from('investors').update({ ...fromInvestor(data), updated_at: new Date().toISOString() }).eq('id', id);
     if (error) { alert('Error updating investor: ' + error.message); return; }
     set((s) => ({ investors: s.investors.map((x) => x.id === id ? { ...x, ...data } : x) }));

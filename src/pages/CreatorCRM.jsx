@@ -1,5 +1,5 @@
 import { exportToCSV } from '../utils/exportCSV';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import useCreatorStore, {
   CREATOR_STAGES, CONTENT_NICHES, CREATOR_STATUS,
@@ -33,7 +33,9 @@ const DEFAULTS = {
 };
 
 export default function CreatorCRM() {
-  const { creators, addCreator, updateCreator, deleteCreator, updateCreatorStage } = useCreatorStore();
+ const { creators, addCreator, updateCreator, deleteCreator, updateCreatorStage, fetchCreators, loading } = useCreatorStore();
+
+useEffect(() => { fetchCreators(); }, []);
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(DEFAULTS);
