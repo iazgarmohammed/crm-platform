@@ -91,12 +91,9 @@ const useMarketingStore = create((set, get) => ({
   },
 
   addLead: async (data) => {
-  const { data: { user } } = await supabase.auth.getUser();
-  const { data: inserted, error } = await supabase
-    .from('leads').insert([{ ...fromLead(data), created_by: user.id }]).select().single();
-  if (error) { alert('Error: ' + error.message); return; }
-  set((s) => ({ leads: [toLead(inserted), ...s.leads] }));
-},
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data: inserted, error } = await supabase
+      .from('leads').insert([{ ...fromLead(data), created_by: user.id }]).select().single();
     if (error) { alert('Error: ' + error.message); return; }
     set((s) => ({ leads: [toLead(inserted), ...s.leads] }));
   },
@@ -125,9 +122,6 @@ const useMarketingStore = create((set, get) => ({
     const { data: { user } } = await supabase.auth.getUser();
     const { data: inserted, error } = await supabase
       .from('campaigns').insert([{ ...fromCampaign(data), created_by: user.id }]).select().single();
-    if (error) { alert('Error: ' + error.message); return; }
-    set((s) => ({ campaigns: [toCampaign(inserted), ...s.campaigns] }));
-  },
     if (error) { alert('Error: ' + error.message); return; }
     set((s) => ({ campaigns: [toCampaign(inserted), ...s.campaigns] }));
   },

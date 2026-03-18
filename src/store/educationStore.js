@@ -71,12 +71,9 @@ const useEducationStore = create((set, get) => ({
   },
 
   addInstitution: async (data) => {
-  const { data: { user } } = await supabase.auth.getUser();
-  const { data: inserted, error } = await supabase
-    .from('institutions').insert([{ ...fromInstitution(data), created_by: user.id }]).select().single();
-  if (error) { alert('Error: ' + error.message); return; }
-  set((s) => ({ institutions: [toInstitution(inserted), ...s.institutions] }));
-},
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data: inserted, error } = await supabase
+      .from('institutions').insert([{ ...fromInstitution(data), created_by: user.id }]).select().single();
     if (error) { alert('Error: ' + error.message); return; }
     set((s) => ({ institutions: [toInstitution(inserted), ...s.institutions] }));
   },
