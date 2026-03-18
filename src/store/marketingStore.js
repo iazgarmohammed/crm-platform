@@ -122,12 +122,12 @@ const useMarketingStore = create((set, get) => ({
   },
 
   addCampaign: async (data) => {
-  const { data: { user } } = await supabase.auth.getUser();
-  const { data: inserted, error } = await supabase
-    .from('campaigns').insert([{ ...fromCampaign(data), created_by: user.id }]).select().single();
-  if (error) { alert('Error: ' + error.message); return; }
-  set((s) => ({ campaigns: [toCampaign(inserted), ...s.campaigns] }));
-},
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data: inserted, error } = await supabase
+      .from('campaigns').insert([{ ...fromCampaign(data), created_by: user.id }]).select().single();
+    if (error) { alert('Error: ' + error.message); return; }
+    set((s) => ({ campaigns: [toCampaign(inserted), ...s.campaigns] }));
+  },
     if (error) { alert('Error: ' + error.message); return; }
     set((s) => ({ campaigns: [toCampaign(inserted), ...s.campaigns] }));
   },
