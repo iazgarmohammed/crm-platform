@@ -61,12 +61,14 @@ const useCreatorStore = create((set) => ({
   },
 
   addCreator: async (data) => {
-  const { data: { user } } = await supabase.auth.getUser();
-  const { data: inserted, error } = await supabase
-    .from('creators').insert([{ ...fromCreator(data), created_by: user.id }]).select().single();
-  if (error) { alert('Error: ' + error.message); return; }
-  set((s) => ({ creators: [toCreator(inserted), ...s.creators] }));
-},
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data: inserted, error } = await supabase
+      .from('creators').insert([{ ...fromCreator(data), created_by: user.id }]).select().single();
+    if (error) { alert('Error: ' + error.message); return; }
+    set((s) => ({ creators: [toCreator(inserted), ...s.creators] }));
+  },
+
+  updateCreator: async (id, data) => {
     if (error) { alert('Error: ' + error.message); return; }
     set((s) => ({ creators: [toCreator(inserted), ...s.creators] }));
   },
